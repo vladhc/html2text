@@ -18,6 +18,14 @@ var (
 	newlineRe = regexp.MustCompile(`\n\n+`)
 )
 
+type MarkerConfig struct {
+	Bold bool
+}
+
+var Config = MarkerConfig{
+	Bold: true,
+}
+
 type textifyTraverseCtx struct {
 	Buf bytes.Buffer
 
@@ -129,7 +137,10 @@ func (ctx *textifyTraverseCtx) handleElementNode(node *html.Node) error {
 			return err
 		}
 		str := subCtx.Buf.String()
-		return ctx.emit("*" + str + "*")
+		if Config.Bold {
+			str = "*" + str + "*"
+		}
+		return ctx.emit(str)
 
 	case atom.A:
 		// If image is the only child, take its alt text as the link text

@@ -359,6 +359,29 @@ func TestHeadings(t *testing.T) {
 
 }
 
+func TestConfig(t *testing.T) {
+	testCases := []struct {
+		config MarkerConfig
+		input  string
+		output string
+	}{
+		{
+			config: MarkerConfig{
+				Bold: false,
+			},
+			input:  "<b>Test</b>",
+			output: "Test",
+		},
+	}
+	oldConfig := Config
+	defer func() { Config = oldConfig }()
+
+	for _, testCase := range testCases {
+		Config = testCase.config
+		assertString(t, testCase.input, testCase.output)
+	}
+}
+
 func TestBold(t *testing.T) {
 	testCases := []struct {
 		input  string
