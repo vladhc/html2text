@@ -373,11 +373,11 @@ func TestConfig(t *testing.T) {
 			output: "Test",
 		},
 	}
-	oldConfig := Config
-	defer func() { Config = oldConfig }()
+	oldConfig := config
+	defer func() { SetConfig(oldConfig) }()
 
 	for _, testCase := range testCases {
-		Config = testCase.config
+		SetConfig(testCase.config)
 		assertString(t, testCase.input, testCase.output)
 	}
 }

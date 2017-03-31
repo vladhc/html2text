@@ -22,8 +22,12 @@ type MarkerConfig struct {
 	Bold bool
 }
 
-var Config = MarkerConfig{
+var config = MarkerConfig{
 	Bold: true,
+}
+
+func SetConfig(c MarkerConfig) {
+	config = c
 }
 
 type textifyTraverseCtx struct {
@@ -137,7 +141,7 @@ func (ctx *textifyTraverseCtx) handleElementNode(node *html.Node) error {
 			return err
 		}
 		str := subCtx.Buf.String()
-		if Config.Bold {
+		if config.Bold {
 			str = "*" + str + "*"
 		}
 		return ctx.emit(str)
