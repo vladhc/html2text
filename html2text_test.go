@@ -208,7 +208,7 @@ func TestLinks(t *testing.T) {
 		},
 		{
 			`<a href="http://example.com/"></a>`,
-			`( http://example.com/ )`,
+			``,
 		},
 		{
 			`<a href="">Link</a>`,
@@ -216,55 +216,55 @@ func TestLinks(t *testing.T) {
 		},
 		{
 			`<a href="http://example.com/">Link</a>`,
-			`Link ( http://example.com/ )`,
+			`Link`,
 		},
 		{
 			`<a href="http://example.com/"><span class="a">Link</span></a>`,
-			`Link ( http://example.com/ )`,
+			`Link`,
 		},
 		{
 			"<a href='http://example.com/'>\n\t<span class='a'>Link</span>\n\t</a>",
-			`Link ( http://example.com/ )`,
+			`Link`,
 		},
 		{
 			"<a href='mailto:contact@example.org'>Contact Us</a>",
-			`Contact Us ( contact@example.org )`,
+			`Contact Us`,
 		},
 		{
 			"<a href=\"http://example.com:80/~user?aaa=bb&amp;c=d,e,f#foo\">Link</a>",
-			`Link ( http://example.com:80/~user?aaa=bb&c=d,e,f#foo )`,
+			`Link`,
 		},
 		{
 			"<a title='title' href=\"http://example.com/\">Link</a>",
-			`Link ( http://example.com/ )`,
+			`Link`,
 		},
 		{
 			"<a href=\"   http://example.com/ \"> Link </a>",
-			`Link ( http://example.com/ )`,
+			`Link`,
 		},
 		{
 			"<a href=\"http://example.com/a/\">Link A</a> <a href=\"http://example.com/b/\">Link B</a>",
-			`Link A ( http://example.com/a/ ) Link B ( http://example.com/b/ )`,
+			`Link A Link B`,
 		},
 		{
 			"<a href=\"%%LINK%%\">Link</a>",
-			`Link ( %%LINK%% )`,
+			`Link`,
 		},
 		{
 			"<a href=\"[LINK]\">Link</a>",
-			`Link ( [LINK] )`,
+			`Link`,
 		},
 		{
 			"<a href=\"{LINK}\">Link</a>",
-			`Link ( {LINK} )`,
+			`Link`,
 		},
 		{
 			"<a href=\"[[!unsubscribe]]\">Link</a>",
-			`Link ( [[!unsubscribe]] )`,
+			`Link`,
 		},
 		{
 			"<p>This is <a href=\"http://www.google.com\" >link1</a> and <a href=\"http://www.google.com\" >link2 </a> is next.</p>",
-			`This is link1 ( http://www.google.com ) and link2 ( http://www.google.com ) is next.`,
+			`This is link1 and link2 is next.`,
 		},
 	}
 
@@ -297,19 +297,19 @@ func TestImageAltTags(t *testing.T) {
 		// Images do matter if they are in a link
 		{
 			`<a href="http://example.com/"><img src="http://example.ru/hello.jpg" alt="Example"/></a>`,
-			`Example ( http://example.com/ )`,
+			`Example`,
 		},
 		{
 			`<a href="http://example.com/"><img src="http://example.ru/hello.jpg" alt="Example"></a>`,
-			`Example ( http://example.com/ )`,
+			`Example`,
 		},
 		{
 			`<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'/></a>`,
-			`Example ( http://example.com/ )`,
+			`Example`,
 		},
 		{
 			`<a href='http://example.com/'><img src='http://example.ru/hello.jpg' alt='Example'></a>`,
-			`Example ( http://example.com/ )`,
+			`Example`,
 		},
 	}
 
@@ -345,7 +345,7 @@ func TestHeadings(t *testing.T) {
 		},
 		{
 			"<h1><a href='http://example.com/'>Test</a></h1>",
-			"****************************\nTest ( http://example.com/ )\n****************************",
+			"****\nTest\n****",
 		},
 		{
 			"<h3> <span class='a'>Test </span></h3>",
@@ -542,7 +542,7 @@ func TestText(t *testing.T) {
 			`<li>
 		  <a href="/new" data-ga-click="Header, create new repository, icon:repo"><span class="octicon octicon-repo"></span> New repository</a>
 		</li>`,
-			`\* New repository \( /new \)`,
+			`\* New repository`,
 		},
 		{
 			`hi
@@ -560,14 +560,14 @@ func TestText(t *testing.T) {
 	</ul>
 `,
 			`hi
-hello google \( https://google.com \)
+hello google
 
 test
 
 List:
 
-\* Foo \( foo \)
-\* Barsoap \( http://www.microshwhat.com/bar/soapy \)
+\* Foo
+\* Barsoap
 \* Baz`,
 		},
 		// Malformed input html.
@@ -585,12 +585,12 @@ List:
 		        <li>Baz</li>
 			</ul>
 		`,
-			`hi hello google \( https://google.com \) test
+			`hi hello google test
 
 List:
 
-\* Foo \( foo \)
-\* Bar \( /\n[ \t]+bar/baz \)
+\* Foo
+\* Bar
 \* Baz`,
 		},
 	}
@@ -683,7 +683,7 @@ func Example() {
 	fmt.Println(text)
 
 	// Output:
-	// Mega Service ( http://mymegaservice.com/ )
+	// Mega Service
 	//
 	// ******************************************
 	// Welcome to your new account on my service!
@@ -691,7 +691,7 @@ func Example() {
 	//
 	// Here is some more information:
 	//
-	// * Link 1: Example.com ( https://example.com )
-	// * Link 2: Example2.com ( https://example2.com )
+	// * Link 1: Example.com
+	// * Link 2: Example2.com
 	// * Something else
 }

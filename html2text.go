@@ -150,21 +150,13 @@ func (ctx *textifyTraverseCtx) handleElementNode(node *html.Node) error {
 		// If image is the only child, take its alt text as the link text
 		if img := node.FirstChild; img != nil && node.LastChild == img && img.DataAtom == atom.Img {
 			if altText := getAttrVal(img, "alt"); altText != "" {
-				ctx.emit(altText)
+				_ = ctx.emit(altText)
 			}
 		} else if err := ctx.traverseChildren(node); err != nil {
 			return err
 		}
 
-		hrefLink := ""
-		if attrVal := getAttrVal(node, "href"); attrVal != "" {
-			attrVal = ctx.normalizeHrefLink(attrVal)
-			if attrVal != "" {
-				hrefLink = "( " + attrVal + " )"
-			}
-		}
-
-		return ctx.emit(hrefLink)
+		return ctx.emit("")
 
 	case atom.P, atom.Ul, atom.Table:
 		if err := ctx.emit("\n\n"); err != nil {
