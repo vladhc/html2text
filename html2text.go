@@ -194,6 +194,12 @@ func (ctx *textifyTraverseCtx) traverseChildren(node *html.Node) error {
 	return nil
 }
 
+var symbolsWithNoSpaceBefore map[rune]bool = map[rune]bool{
+	'.': true,
+	';': true,
+	',': true,
+}
+
 func (ctx *textifyTraverseCtx) emit(data string) error {
 	if len(data) == 0 {
 		return nil
@@ -202,8 +208,8 @@ func (ctx *textifyTraverseCtx) emit(data string) error {
 	var err error
 	for _, line := range lines {
 		runes := []rune(line)
-		startsWithSpace := unicode.IsSpace(runes[0])
-		if !startsWithSpace && !ctx.endsWithSpace {
+		needsSpaceBefore := !unicode.IsSpace(runes[0]) && !symbolsWithNoSpaceBefore[runes[0]]
+		if needsSpaceBefore && !ctx.endsWithSpace {
 			ctx.Buf.WriteByte(' ')
 			ctx.lineLength++
 		}

@@ -266,6 +266,10 @@ func TestLinks(t *testing.T) {
 			"<p>This is <a href=\"http://www.google.com\" >link1</a> and <a href=\"http://www.google.com\" >link2 </a> is next.</p>",
 			`This is link1 and link2 is next.`,
 		},
+		{
+			`<html lang="en"><div>Text with <a href="http://example.com">link</a>.</div></html>`,
+			"Text with link.",
+		},
 	}
 
 	for _, testCase := range testCases {
